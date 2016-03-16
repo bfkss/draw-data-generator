@@ -72,7 +72,7 @@ class DataGenerator
     for pos in @data
       x = pos[0]
       y = pos[1]
-      @latLngData.push [Math.round10((x - (@width / 2)) * ( 360 / @width ), -4), Math.round10(-(y - (@height / 2)) * ( 180 / @height ), -4)]
+      @latLngData.push [Math.round10(-(y - (@height / 2)) * ( 180 / @height ), -4), Math.round10((x - (@width / 2)) * ( 360 / @width ), -4)]
 
     # console.log @data
     console.log "latitude/longitude output:"

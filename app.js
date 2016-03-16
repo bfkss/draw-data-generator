@@ -67,7 +67,7 @@
         pos = ref[i];
         x = pos[0];
         y = pos[1];
-        this.latLngData.push([Math.round10((x - (this.width / 2)) * (360 / this.width), -4), Math.round10(-(y - (this.height / 2)) * (180 / this.height), -4)]);
+        this.latLngData.push([Math.round10(-(y - (this.height / 2)) * (180 / this.height), -4), Math.round10((x - (this.width / 2)) * (360 / this.width), -4)]);
       }
       console.log("latitude/longitude output:");
       console.log(this.latLngData);
