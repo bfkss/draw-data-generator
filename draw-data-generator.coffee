@@ -1,4 +1,5 @@
-class DataGenerator
+# needs D3.js installed and initialized
+class DrawDataGenerator
 
   constructor: (@parent = 'body') ->
     if not d3

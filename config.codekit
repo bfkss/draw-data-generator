@@ -15,17 +15,15 @@
 		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
-	"\/data-generator.coffee": {
-		"createSourceMap": 0,
-		"fileType": 32,
+	"\/app.js": {
+		"fileType": 64,
 		"ignore": 1,
-		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/data-generator.coffee",
-		"minifyOutput": 0,
-		"outputAbbreviatedPath": "\/data-generator.js",
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/app.js",
+		"outputAbbreviatedPath": "\/app.min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
+		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
 	"\/decimal-rounding.js": {
@@ -48,6 +46,19 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/draw-data-generator.coffee": {
+		"createSourceMap": 0,
+		"fileType": 32,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
+		"inputAbbreviatedPath": "\/draw-data-generator.coffee",
+		"minifyOutput": 0,
+		"outputAbbreviatedPath": "\/draw-data-generator.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
 		"syntaxCheckerStyle": 1
 		},
 	"\/index.html": {
@@ -99,7 +110,7 @@
 	},
 "projectAttributes": {
 	"bowerAbbreviatedPath": "",
-	"displayValue": "Data-Generator",
+	"displayValue": "DrawDataGenerator",
 	"displayValueWasSetByUser": 1,
 	"iconImageName": "pencil_darkGray"
 	},

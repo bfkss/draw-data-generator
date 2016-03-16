@@ -1,4 +1,4 @@
-# @codekit-prepend "data-generator.coffee"
+# @codekit-prepend "draw-data-generator.coffee"
 
-DG = new DataGenerator('main')
+DG = new DrawDataGenerator('main')
 # console.log DG
