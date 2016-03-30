@@ -1,7 +1,7 @@
 # needs D3.js installed and initialized
 class DrawDataGenerator
 
-  constructor: (@parent = 'body') ->
+  constructor: (@parent = 'body', @width = 900, @height = 810) ->
     if not d3
       console.error 'you need d3.js to use the data-generator'
       return
@@ -9,8 +9,9 @@ class DrawDataGenerator
     self = this
     @data = []
     @latLngData = []
-    @width = 900
-    @height = 810
+    @scagnosticsData = {points: []}
+    # @width = 900
+    # @height = 810
 
     d3.select('body').style('background-color', 'grey')
     svg = d3.select(@parent).append('svg')
@@ -34,11 +35,13 @@ class DrawDataGenerator
         clearInterval @interval
         @interval = null
 
-    document.onkeypress = (e) ->
+    document.onkeypress = (e) =>
       # console.log self
       if e.which is 32
         # self.clear()
-        self.convertData()
+        @printPxData()
+        @convertToLatLngData()
+        @convertToScagnosticsData()
 
   draw: () ->
     @data.push @pos
@@ -69,22 +72,51 @@ class DrawDataGenerator
       .data []
       .exit().remove()
 
-  convertData: () ->
+  convertToLatLngData: () ->
     for pos in @data
       x = pos[0]
       y = pos[1]
       @latLngData.push [Math.round10(-(y - (@height / 2)) * ( 180 / @height ), -4), Math.round10((x - (@width / 2)) * ( 360 / @width ), -4)]
 
-    # console.log @data
-    console.log "latitude/longitude output:"
+    console.log 'latLng-data output:'
     console.log @latLngData
 
     file = document.createElement 'a'
     file.download = 'latLng.json'
-    file.textContent = 'Download'
+    file.textContent = 'lat-lng file'
     file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@latLngData))))
 
     document.body.appendChild(file)
+    document.body.appendChild document.createElement 'br'
+
+  convertToScagnosticsData: () ->
+    for pos in @data
+      x = pos[0]
+      y = pos[1]
+      @scagnosticsData.points.push {x: x, y: y}
+
+    console.log 'scagnostics-data output:'
+    console.log @scagnosticsData
+
+    file = document.createElement 'a'
+    file.download = 'scagnosticsData.json'
+    file.textContent = 'scagnostics-data file'
+    file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@scagnosticsData))))
+
+    document.body.appendChild(file)
+    document.body.appendChild document.createElement 'br'
+
+  printPxData: () ->
+    console.log 'pixel-data output:'
+    console.log @data
+
+    file = document.createElement 'a'
+    file.download = 'pixelData.json'
+    file.textContent = 'pixel-data file'
+    file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@data))))
+
+    document.body.appendChild(file)
+    document.body.appendChild document.createElement 'br'
 
 
     # function dl(array,filename){

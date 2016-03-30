@@ -3,9 +3,11 @@
   var DG, DrawDataGenerator;
 
   DrawDataGenerator = (function() {
-    function DrawDataGenerator(parent) {
+    function DrawDataGenerator(parent, width, height) {
       var self, svg;
       this.parent = parent != null ? parent : 'body';
+      this.width = width != null ? width : 900;
+      this.height = height != null ? height : 810;
       if (!d3) {
         console.error('you need d3.js to use the data-generator');
         return;
@@ -13,8 +15,9 @@
       self = this;
       this.data = [];
       this.latLngData = [];
-      this.width = 900;
-      this.height = 810;
+      this.scagnosticsData = {
+        points: []
+      };
       d3.select('body').style('background-color', 'grey');
       svg = d3.select(this.parent).append('svg').attr({
         width: this.width,
@@ -32,11 +35,15 @@
           return this.interval = null;
         }
       });
-      document.onkeypress = function(e) {
-        if (e.which === 32) {
-          return self.convertData();
-        }
-      };
+      document.onkeypress = (function(_this) {
+        return function(e) {
+          if (e.which === 32) {
+            _this.printPxData();
+            _this.convertToLatLngData();
+            return _this.convertToScagnosticsData();
+          }
+        };
+      })(this);
     }
 
     DrawDataGenerator.prototype.draw = function() {
@@ -60,7 +67,7 @@
       return this.g.selectAll('circle').data([]).exit().remove();
     };
 
-    DrawDataGenerator.prototype.convertData = function() {
+    DrawDataGenerator.prototype.convertToLatLngData = function() {
       var file, i, len, pos, ref, x, y;
       ref = this.data;
       for (i = 0, len = ref.length; i < len; i++) {
@@ -69,13 +76,48 @@
         y = pos[1];
         this.latLngData.push([Math.round10(-(y - (this.height / 2)) * (180 / this.height), -4), Math.round10((x - (this.width / 2)) * (360 / this.width), -4)]);
       }
-      console.log("latitude/longitude output:");
+      console.log('latLng-data output:');
       console.log(this.latLngData);
       file = document.createElement('a');
       file.download = 'latLng.json';
-      file.textContent = 'Download';
+      file.textContent = 'lat-lng file';
       file.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(this.latLngData))));
-      return document.body.appendChild(file);
+      document.body.appendChild(file);
+      return document.body.appendChild(document.createElement('br'));
+    };
+
+    DrawDataGenerator.prototype.convertToScagnosticsData = function() {
+      var file, i, len, pos, ref, x, y;
+      ref = this.data;
+      for (i = 0, len = ref.length; i < len; i++) {
+        pos = ref[i];
+        x = pos[0];
+        y = pos[1];
+        this.scagnosticsData.points.push({
+          x: x,
+          y: y
+        });
+      }
+      console.log('scagnostics-data output:');
+      console.log(this.scagnosticsData);
+      file = document.createElement('a');
+      file.download = 'scagnosticsData.json';
+      file.textContent = 'scagnostics-data file';
+      file.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(this.scagnosticsData))));
+      document.body.appendChild(file);
+      return document.body.appendChild(document.createElement('br'));
+    };
+
+    DrawDataGenerator.prototype.printPxData = function() {
+      var file;
+      console.log('pixel-data output:');
+      console.log(this.data);
+      file = document.createElement('a');
+      file.download = 'pixelData.json';
+      file.textContent = 'pixel-data file';
+      file.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(this.data))));
+      document.body.appendChild(file);
+      return document.body.appendChild(document.createElement('br'));
     };
 
     return DrawDataGenerator;
