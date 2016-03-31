@@ -40,6 +40,7 @@
           if (e.which === 32) {
             _this.printPxData();
             _this.convertToLatLngData();
+            _this.convertToGeoJSON();
             return _this.convertToScagnosticsData();
           }
         };
@@ -86,6 +87,36 @@
       return document.body.appendChild(document.createElement('br'));
     };
 
+    DrawDataGenerator.prototype.convertToGeoJSON = function() {
+      var feature, file, i, len, pos, ref, x, y;
+      this.geoJSON = {
+        type: "FeatureCollection",
+        features: []
+      };
+      ref = this.data;
+      for (i = 0, len = ref.length; i < len; i++) {
+        pos = ref[i];
+        x = pos[0];
+        y = pos[1];
+        feature = {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [Math.round10((x - (this.width / 2)) * (360 / this.width), -4), Math.round10(-(y - (this.height / 2)) * (180 / this.height), -4)]
+          }
+        };
+        this.geoJSON.features.push(feature);
+      }
+      console.log('GeoJSON output:');
+      console.log(this.geoJSON);
+      file = document.createElement('a');
+      file.download = 'geoJSON.json';
+      file.textContent = 'GeoJSON file';
+      file.href = 'data:application/json;base64,' + window.btoa(unescape(encodeURIComponent(JSON.stringify(this.geoJSON))));
+      document.body.appendChild(file);
+      return document.body.appendChild(document.createElement('br'));
+    };
+
     DrawDataGenerator.prototype.convertToScagnosticsData = function() {
       var file, i, len, pos, ref, x, y;
       ref = this.data;
@@ -124,6 +155,6 @@
 
   })();
 
-  DG = new DrawDataGenerator('main');
+  DG = new DrawDataGenerator('main', document.body.clientWidth, document.documentElement.clientHeight - 22);
 
 }).call(this);

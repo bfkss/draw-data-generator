@@ -10,8 +10,6 @@ class DrawDataGenerator
     @data = []
     @latLngData = []
     @scagnosticsData = {points: []}
-    # @width = 900
-    # @height = 810
 
     d3.select('body').style('background-color', 'grey')
     svg = d3.select(@parent).append('svg')
@@ -36,16 +34,15 @@ class DrawDataGenerator
         @interval = null
 
     document.onkeypress = (e) =>
-      # console.log self
       if e.which is 32
-        # self.clear()
         @printPxData()
         @convertToLatLngData()
+        @convertToGeoJSON()
         @convertToScagnosticsData()
 
   draw: () ->
     @data.push @pos
-    # console.log @data
+
     @g.selectAll 'circle'
       .data @data
       .enter().append 'circle'
@@ -89,6 +86,33 @@ class DrawDataGenerator
     document.body.appendChild(file)
     document.body.appendChild document.createElement 'br'
 
+  convertToGeoJSON: () ->
+    @geoJSON =
+      type: "FeatureCollection"
+      features: []
+
+    for pos in @data
+      x = pos[0]
+      y = pos[1]
+      feature =
+        type: "Feature"
+        geometry:
+          type: "Point"
+          coordinates: [Math.round10((x - (@width / 2)) * ( 360 / @width ), -4), Math.round10(-(y - (@height / 2)) * ( 180 / @height ), -4)]
+
+      @geoJSON.features.push feature
+
+    console.log 'GeoJSON output:'
+    console.log @geoJSON
+
+    file = document.createElement 'a'
+    file.download = 'geoJSON.json'
+    file.textContent = 'GeoJSON file'
+    file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@geoJSON))))
+
+    document.body.appendChild(file)
+    document.body.appendChild document.createElement 'br'
+
   convertToScagnosticsData: () ->
     for pos in @data
       x = pos[0]
@@ -117,25 +141,3 @@ class DrawDataGenerator
 
     document.body.appendChild(file)
     document.body.appendChild document.createElement 'br'
-
-
-    # function dl(array,filename){
-    #   var b=document.createElement('a');
-    #   b.download=filename;
-    #   b.textContent=filename;
-    #   b.href='data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(array))))
-    #   return b
-    # }
-    #
-    # document.body.appendChild(dl(array,'my.json'));
-
-  # document.onkeydown = (e) ->
-  #   @charCode = e.keyCode || e.which
-  #   # draw data-points while space is pressed
-  #   # if charCode is 32
-  #   #   # console.log 'pressed space'
-  #   #   document.onmousemove = (me) ->
-  #   #     console.log me
-  #
-  # document.onkeyup = (e) ->
-  #   @charCode = null
