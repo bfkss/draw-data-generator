@@ -3,6 +3,7 @@
 ## Setup
 
 Clone or download this repo, `cd` into `/dist`.
+
 Start a HTTP-Server with e.g. `python -m SimpleHTTPServer` and visit http://localhost:8000
 
 ## Usage
