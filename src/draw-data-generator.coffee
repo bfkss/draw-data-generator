@@ -161,7 +161,7 @@ class DrawDataGenerator
         tr = d3.select('#scag tbody').selectAll('tr')
           .data dataArray
           .html((d) ->
-            "<td>#{d.property}</td><td>#{d.value}</td>"
+            "<td>#{d.property.toLowerCase()}</td><td>#{d.value}</td>"
           )
 
         # tr.style('background-color', '#3fd221')
