@@ -4,13 +4,17 @@ head
   title DrawDataGenerator
   script(src="//d3js.org/d3.v3.min.js", charset="utf-8")
   script(src="decimal-rounding.min.js", charset="utf-8")
-  style(media="screen").
-    svg {
-      border-radius: 5px;
-      box-shadow: 0 0 5px grey inset;
-      background-color: white;
-    }
+  link(rel="stylesheet", href="/css/master.css", media="screen", title="no title", charset="utf-8")
+  
 body
   main
+  aside
+    div#downloads
+      h4 Downloads
+    div#scag
+      h4 Scagnostics
+      table
+        tbody
+
   script(src="app.js", charset="utf-8")
   

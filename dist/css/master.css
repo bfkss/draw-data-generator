@@ -1,0 +1,40 @@
+svg {
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #808080 inset;
+}
+main {
+  display: inline-block;
+}
+aside {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: top;
+  max-width: 350px;
+}
+aside h4 {
+  margin: 2px;
+  text-decoration: underline;
+}
+aside #scag,
+aside #downloads {
+  margin: 0 0 10px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: 1px solid #ededed;
+}
+td:first-child {
+  text-transform: capitalize;
+}
+a {
+  text-decoration: none;
+  color: #fff;
+  background-color: #5d90e8;
+  padding: 2px;
+  border-radius: 3px;
+  margin: 3px 0;
+  display: inline-block;
+}
+a:hover {
+  background-color: #a4c0f0;
+}

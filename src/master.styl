@@ -1,0 +1,40 @@
+$bg = #ffffff
+$shadow = #808080
+
+svg
+  background-color $bg
+  border-radius 5px
+  box-shadow 0 0 5px $shadow inset
+
+main
+  display inline-block
+
+aside
+  display inline-block
+  margin-left 10px
+  vertical-align top
+  max-width: 350px
+  h4
+    margin 2px
+    text-decoration: underline;
+
+  & #scag
+  & #downloads
+    margin 0 0 10px
+    padding 10px 15px
+    border-radius 5px
+    border 1px solid #ededed
+
+td:first-child
+  text-transform: capitalize;
+
+a
+  text-decoration: none;
+  color: white
+  background-color: rgb(93, 144, 232)
+  padding: 2px
+  border-radius: 3px
+  margin: 3px 0
+  display: inline-block;
+  &:hover
+    background-color: rgb(164, 192, 240)

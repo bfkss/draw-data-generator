@@ -1,3 +1,4 @@
+# @codekit-prepend 'ajax.js', 'draw-data-generator.coffee';
 
 # optionally you may give the width and height in the parameters: ('main', 900, 810)
 DG = new DrawDataGenerator(

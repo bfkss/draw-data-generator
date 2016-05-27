@@ -6,14 +6,19 @@ class DrawDataGenerator
     @data = []
     @latLngData = []
     @scagnosticsData = {points: []}
+    @downloads = document.getElementById 'downloads'
+    @scag = d3.select '#scag table'
 
     svg = d3.select(@parent).append('svg')
       .attr(
         width:
-          @width
+          @width - 350
         height:
           @height
-        ).style 'border', '1px solid darkgray'
+      ).style(
+        border: '1px solid darkgray'
+        display: 'inline-block'
+      )
 
     @g = svg.append 'g'
 
@@ -30,10 +35,12 @@ class DrawDataGenerator
 
     document.onkeypress = (e) =>
       if e.which is 32
+        @clear()
         @printPxData()
         @convertToLatLngData()
         @convertToGeoJSON()
         @convertToScagnosticsData()
+        @getScagnostics()
 
   draw: () ->
     @data.push @pos
@@ -59,10 +66,12 @@ class DrawDataGenerator
       )
 
   clear: () ->
-    @data = []
-    @g.selectAll 'circle'
-      .data []
-      .exit().remove()
+    # @data = []
+    # @g.selectAll 'circle'
+    #   .data []
+    #   .exit().remove()
+    d3.selectAll 'a, br'
+      .remove()
 
   convertToLatLngData: () ->
     for pos in @data
@@ -78,8 +87,8 @@ class DrawDataGenerator
     file.textContent = 'lat-lng file'
     file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@latLngData))))
 
-    document.body.appendChild(file)
-    document.body.appendChild document.createElement 'br'
+    @downloads.appendChild(file)
+    @downloads.appendChild document.createElement 'br'
 
   convertToGeoJSON: () ->
     @geoJSON =
@@ -105,8 +114,8 @@ class DrawDataGenerator
     file.textContent = 'GeoJSON file'
     file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@geoJSON))))
 
-    document.body.appendChild(file)
-    document.body.appendChild document.createElement 'br'
+    @downloads.appendChild(file)
+    @downloads.appendChild document.createElement 'br'
 
   convertToScagnosticsData: () ->
     for pos in @data
@@ -122,8 +131,8 @@ class DrawDataGenerator
     file.textContent = 'scagnostics-data file'
     file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@scagnosticsData))))
 
-    document.body.appendChild(file)
-    document.body.appendChild document.createElement 'br'
+    @downloads.appendChild(file)
+    @downloads.appendChild document.createElement 'br'
 
   printPxData: () ->
     console.log 'pixel-data output:'
@@ -134,5 +143,48 @@ class DrawDataGenerator
     file.textContent = 'pixel-data file'
     file.href = 'data:application/json;base64,'+window.btoa(unescape(encodeURIComponent(JSON.stringify(@data))))
 
-    document.body.appendChild(file)
-    document.body.appendChild document.createElement 'br'
+    @downloads.appendChild(file)
+    @downloads.appendChild document.createElement 'br'
+
+  getScagnostics: () ->
+    requestScagnostics(
+      JSON.stringify(@scagnosticsData)
+      (data) ->
+        console.log data
+
+        dataArray = for prop, val of data
+          {
+            property: prop,
+            value: val
+          }
+
+        tr = d3.select('#scag tbody').selectAll('tr')
+          .data dataArray
+          .html((d) ->
+            "<td>#{d.property}</td><td>#{d.value}</td>"
+          )
+
+        # tr.style('background-color', '#3fd221')
+        #   .transition()
+        #     .style('background-color', 'white')
+
+        tr.enter().append 'tr'
+          .html((d) ->
+            "<td>#{d.property.toLowerCase()}</td><td>#{d.value}</td>"
+          )
+        tr.exit().remove()
+
+        # td = tr.selectAll 'td'
+        #     .data((d) ->
+        #       [d.property, d.value]
+        #     )
+        #     .text((d) ->
+        #       d
+        #     )
+        #
+        # td.enter().append('tr')
+        #   .text((d) ->
+        #     d
+        #   )
+        # td.exit().remove()
+    )
